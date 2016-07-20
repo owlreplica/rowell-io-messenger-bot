@@ -1,7 +1,7 @@
 {
-  "name": "pika-traffic-data-fetcher",
+  "name": "rowell-io-messenger-bot",
   "version": "0.0.1",
-  "description": "Traffic Data Fetcher",
+  "description": "rowell-io | Messenger Bot",
   "repository": {
     "type": "git",
     "url": ""
