@@ -2,8 +2,8 @@
 http      = require "http"
 Bot       = require "messenger-bot"
 _         = require "underscore"
-FB_TOKEN  = "EAAD0bZCsIRcsBAD7t09FFtJj2pOhGxSbpZCcVZAcWQRZCorcDZBVQgXAuyenRd4ebBN9ZADvorWyli6ZCYImSaE4KhzAQG4qZBY3IflZCftjrjz0yvpisRM1G9R74yPUDbnc0lIFqI8UWQ5JVZCJyIjGIN801OueQO8qoiXbJSwMLehgZDZD"
-FB_VERIFY = "password123"
+FB_TOKEN  = process.env.FB_TOKEN
+FB_VERIFY = process.env.FB_VERIFY
 APP_PORT  = process.env.PORT || 5000
 
 do ->
