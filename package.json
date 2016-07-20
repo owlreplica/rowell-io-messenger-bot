@@ -1,0 +1,32 @@
+{
+  "name": "pika-traffic-data-fetcher",
+  "version": "0.0.1",
+  "description": "Traffic Data Fetcher",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "main": "lib/app.js",
+  "scripts": {
+    "start": "node ./lib/app.js"
+  },
+  "engines": {
+    "node": "6.2.2",
+    "npm": "3.9.5"
+  },
+  "dependencies": {
+    "messenger-bot": "^2.3.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.7.1",
+    "mocha": "~1.20.0",
+    "grunt": "~0.4.1",
+    "grunt-cli": "~0.1.13",
+    "load-grunt-tasks": "~0.4.0",
+    "jshint-stylish": "~0.1.3",
+    "grunt-contrib-coffee": "^1.0.0",
+    "grunt-fixmyjs": "~0.1.1",
+    "grunt-jsbeautifier": "~0.2.7"
+  }
+}
