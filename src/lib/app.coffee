@@ -2,6 +2,7 @@
 http      = require "http"
 Bot       = require "messenger-bot"
 _         = require "underscore"
+request   = require "request"
 FB_TOKEN  = process.env.FB_TOKEN
 FB_VERIFY = process.env.FB_VERIFY
 APP_PORT  = process.env.PORT || 5000
@@ -15,25 +16,37 @@ do ->
   bot.on "message", (payload, reply)->
     console.log "Received message from #{payload.sender.id}", payload
     messageText = payload.message.text;
-    if messageText is "What is today's offer?"
-      replyBody = {
-        "attachment": {
-          "type": "template",
-          "payload": {
-            "template_type": "generic",
-            "elements": [{
-              "title": "新作浴衣 浴衣セット 3点 10柄から選べる浴衣 さらに帯も選べる 送料無料 3,980円税込 浴衣福袋 浴衣 セット ゆ",
-              "subtitle": "Become Japan",
-              "image_url": "http://images.b-static.com/imageserver/s3/354540270-280-280-5-0/3-10-3-980.jpg",
-              "buttons": [
-                {"type": 'web_url', "title": 'View Offer', "url": "http://item.rakuten.co.jp/sweetangel/310014s-345b"},
-                {"type": 'web_url', "title": 'Search More', "url": "www.become.co.jp/yukata.html"},
-              ]
-            }]
+    if messageText startsWith "rowell search for "
+      reply  {"text": "Hi there! Hmmm.. Wait a moment.."}
+      apiQuery = messageText.split("rowell search for ")[1]
+      apiRequest = "http://partner.become.co.jp/json?partner=become&filter=All&image_size=200&num=1&start=1&q=#{yukata}"
+      request.get requestLocationUrl, (err, resp, body)->
+        if err or resp.statusCode != 200
+          throw "devlog: Encountered an error during become partner api call."
+        apiResponse = JSON.parse body
+        result = apiResponse.service_response.service_response.results.result[0]
+        if result
+          offer = {
+            "title": "#{result.title}",
+            "subtitle": "¥#{result.max_price}",
+            "image_url": "#{result.image_url}",
+            "buttons": [
+              {"type": 'web_url', "title": 'View Offer', "url": "#{result.merchant.url}"},
+              {"type": 'web_url', "title": 'Search More', "url": "www.become.co.jp/#{apiQuery}.html"},
+            ]
           }
-        }
-      }
-      reply replyBody
+          replyBody = {
+            "attachment": {
+              "type": "template",
+              "payload": {
+                "template_type": "generic",
+                "elements": [offer]
+              }
+            }
+          }
+          reply replyBody
+        else 
+          reply  {"text": "Sorry but I can't find any offer for #{apiQuery}"}
     else
       reply  {"text": "Sorry but I can't understand what you're saying. Let me think for a while then I'll get back to you."}
 
