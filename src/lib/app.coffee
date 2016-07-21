@@ -15,12 +15,11 @@ do ->
     console.log "boterr:", err
 
   bot.on "message", (payload, reply)->
-    console.log "Received message from #{payload.sender.id}", payload
     messageText = payload.message.text;
     if _s(messageText).startsWith "rowell search for "
       reply  {"text": "Hi there! Hmmm.. Wait a moment.."}
       apiQuery = messageText.split("rowell search for ")[1]
-      apiRequest = "http://partner.become.co.jp/json?partner=become&filter=All&image_size=200&num=1&start=1&q=#{apiQuery}"
+      apiRequest = "http://partner.become.co.jp/json?partner=become&filter=All&image_size=200&num=5&start=1&q=#{apiQuery}"
       request.get apiRequest, (err, resp, body)->
         if err or resp.statusCode != 200
           throw "devlog: Encountered an error during become partner api call."
@@ -47,16 +46,18 @@ do ->
               "type": "template",
               "payload": {
                 "template_type": "generic",
-                "elements": [offers]
+                "elements": offers
               }
             }
           }
+          console.log "devlog: Sending Search Result reply"
           reply replyBody
         else 
+          console.log "devlog: Sending No Result reply"
           reply  {"text": "Sorry but I can't find any offer for #{apiQuery}"}
     else
       reply  {"text": "Sorry but I can't understand what you're saying. Let me think for a while then I'll get back to you."}
 
   http.createServer bot.middleware()
       .listen APP_PORT, ()-> 
-        console.log "Server running on PORT #{APP_PORT}"
+        console.log "devlog: Server running on PORT #{APP_PORT}"
