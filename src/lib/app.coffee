@@ -27,23 +27,27 @@ do ->
         respBody = body.substr(10)
         respBody = respBody.substr(0, respBody.length - 1)
         apiResponse = JSON.parse respBody
-        result = apiResponse.service_response.service_response.results.result[0]
-        if result
-          offer = {
-            "title": "#{result.title}",
-            "subtitle": "¥#{result.max_price}",
-            "image_url": "#{result.image_url}",
-            "buttons": [
-              {"type": 'web_url', "title": 'View Offer', "url": "#{result.merchant.url}"},
-              {"type": 'web_url', "title": 'Search More', "url": "www.become.co.jp/#{apiQuery}.html"},
-            ]
-          }
+        results = apiResponse.service_response.service_response.results.result
+        if results.length > 0
+          offers = []
+          for result in results
+            offer = {
+              "title": "#{result.title}",
+              "subtitle": "¥#{result.max_price}",
+              "image_url": "#{result.image_url}",
+              "buttons": [
+                {"type": 'web_url', "title": 'View Offer', "url": "#{result.merchant.url}"},
+                {"type": 'web_url', "title": 'Search More', "url": "www.become.co.jp/#{apiQuery}.html"},
+              ]
+            }
+            offers.push offer
+            break if offers.length > 5
           replyBody = {
             "attachment": {
               "type": "template",
               "payload": {
                 "template_type": "generic",
-                "elements": [offer]
+                "elements": [offers]
               }
             }
           }
