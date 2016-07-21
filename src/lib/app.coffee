@@ -24,7 +24,9 @@ do ->
       request.get apiRequest, (err, resp, body)->
         if err or resp.statusCode != 200
           throw "devlog: Encountered an error during become partner api call."
-        apiResponse = JSON.parse body
+        respBody = body.substr(10)
+        respBody = respBody.substr(0, respBody.length - 1)
+        apiResponse = JSON.parse respBody
         result = apiResponse.service_response.service_response.results.result[0]
         if result
           offer = {
