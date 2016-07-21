@@ -20,7 +20,7 @@ do ->
     if _s(messageText).startsWith "rowell search for "
       reply  {"text": "Hi there! Hmmm.. Wait a moment.."}
       apiQuery = messageText.split("rowell search for ")[1]
-      apiRequest = "http://partner.become.co.jp/json?partner=become&filter=All&image_size=200&num=1&start=1&q=#{yukata}"
+      apiRequest = "http://partner.become.co.jp/json?partner=become&filter=All&image_size=200&num=1&start=1&q=#{apiQuery}"
       request.get requestLocationUrl, (err, resp, body)->
         if err or resp.statusCode != 200
           throw "devlog: Encountered an error during become partner api call."
