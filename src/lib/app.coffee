@@ -2,6 +2,7 @@
 http      = require "http"
 Bot       = require "messenger-bot"
 _         = require "underscore"
+_s        = require "underscore.string"
 request   = require "request"
 FB_TOKEN  = process.env.FB_TOKEN
 FB_VERIFY = process.env.FB_VERIFY
@@ -16,7 +17,7 @@ do ->
   bot.on "message", (payload, reply)->
     console.log "Received message from #{payload.sender.id}", payload
     messageText = payload.message.text;
-    if messageText startsWith "rowell search for "
+    if _s(messageText).startsWith "rowell search for "
       reply  {"text": "Hi there! Hmmm.. Wait a moment.."}
       apiQuery = messageText.split("rowell search for ")[1]
       apiRequest = "http://partner.become.co.jp/json?partner=become&filter=All&image_size=200&num=1&start=1&q=#{yukata}"
